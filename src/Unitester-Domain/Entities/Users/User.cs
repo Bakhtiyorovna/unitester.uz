@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Unitester_Domain.Enums;
-
 namespace Unitester_Domain.Entities.Users;
 
 public class User:Human

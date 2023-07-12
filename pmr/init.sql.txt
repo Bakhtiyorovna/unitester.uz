@@ -6,6 +6,8 @@ CREATE TABLE users(
 	email VARCHAR(40),
 	phone_number VARCHAR(13),
 	rol TEXT,
+	region TEXT,
+	imagi_path TEXT,
 	description TEXT,
 	created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
 	updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()

@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Unitester-api\Unitester.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>
