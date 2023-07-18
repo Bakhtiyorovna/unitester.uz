@@ -11,9 +11,9 @@ public class UserUpdateDto
     [MaxLength(50)]
     public string LastName { get; set; }
     public string UserName { get; set; } = String.Empty;
-    //public Regions Region { get; set; }
+    public Regions Region { get; set; }
     public IFormFile? Image { get; set; }
-    //public UserRole Role { get; set; }
+    public UserRole Role { get; set; }
     public string Email { get; set; } = String.Empty;
 
     [MaxLength(13)]

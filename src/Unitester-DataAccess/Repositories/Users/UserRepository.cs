@@ -26,13 +26,13 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<int> CreateAsync(Unitester_Domain.Entities.Users.User entity)
+    public async Task<int> CreateAsync(User entity)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.users(first_name, last_name, user_name, email, phone_number, rol, region, imagi_path, description, created_at, updated_at) " +
-                "VALUES(@FirsName, @LastName, @UserName, @Email, @PhoneNumber, @Role, @Region, @ImagePath, @Description, @CreatedAt, @UpdatedAt); ";
+            string query = "INSERT INTO public.users(first_name, last_name, user_name, email, phone_number, rol, region, image_path, description, created_at, updated_at) " +
+                "VALUES(@FirstName, @LastName, @UserName, @Email, @PhoneNumber, @Role, @Region, @ImagePath, @Description, @CreatedAt, @UpdatedAt); ";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -112,7 +112,7 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             string query = $"UPDATE users " +
-                $"SET first_name=@FirstName, last_name=@LastName, user_name=@UserName, email=@Email, phone_number=PhoneNumber, rol=@Role, description=Description, created_at=@CreatedAt, updated_at=UpdatedAt " +
+                $"SET first_name=@FirstName, last_name=@LastName, user_name=@UserName, email=@Email, phone_number=PhoneNumber, rol=@Rol, description=Description, created_at=@CreatedAt, updated_at=UpdatedAt " +
                 $"WHERE id={id};";
 
             var result = await _connection.ExecuteAsync(query, entity);

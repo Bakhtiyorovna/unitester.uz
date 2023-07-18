@@ -14,7 +14,6 @@ namespace Unitester_Service.Services.Users;
 
 public class UserService: IUserService
 {
-
     private readonly IUserRepository _repository;
     private readonly IFileService _fileService;
     public UserService(IUserRepository userRepository,
@@ -34,9 +33,11 @@ public class UserService: IUserService
             FirstName = dto.FirsName,
             LastName = dto.LastName,
             UserName = dto.UserName,
+            ImagePath = imagepath,
             Email = dto.Email,
-            Role=UserRole.Admin,
-            Region=Regions.Toshkent,
+            PhoneNumber=dto.PhoneNumber,
+            Rol = dto.Rol,
+            Region = dto.Region,
             Description = dto.Description,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime()
@@ -59,15 +60,15 @@ public class UserService: IUserService
 
     public async Task<IList<User>> GetAllAsync(PaginationParams @params)
     {
-        var categories = await _repository.GetAllAsync(@params);
-        return categories;
+        var users = await _repository.GetAllAsync(@params);
+        return users;
     }
 
     public async Task<User> GetByIdAsync(long categoryId)
     {
-        var category = await _repository.GetByIdAsync(categoryId);
-        if (category is null) throw new UserNotFoundException();
-        else return category;
+        var user = await _repository.GetByIdAsync(categoryId);
+        if (user is null) throw new UserNotFoundException();
+        else return user;
     }
 
     public async Task<bool> UpdateAsync(long userId, UserUpdateDto dto)
@@ -75,10 +76,12 @@ public class UserService: IUserService
         var user = await _repository.GetByIdAsync(userId);
         if (user is null) throw new UserNotFoundException();
 
-        // parse new items to category
+        // parse new items to user
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
         user.Email = dto.Email;
+        user.Rol = dto.Role;
+        user.Region = dto.Region;
         user.UserName = dto.UserName;
         user.PhoneNumber = dto.PhoneNumber;
         user.Description = dto.Description;
@@ -92,10 +95,10 @@ public class UserService: IUserService
             // upload new image
             string newImagePath = await _fileService.UploadImageAsync(dto.Image);
 
-            // parse new path to category
+            // parse new path to user
             user.ImagePath = newImagePath;
         }
-        // else category old image have to save
+        // else user old image have to save
 
         user.UpdatedAt = TimeHelper.GetDateTime();
 
