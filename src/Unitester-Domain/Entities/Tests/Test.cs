@@ -2,7 +2,7 @@
 
 namespace Unitester_Domain.Entities.Tests;
 
-public class Test:Auditable
+public class Test : Auditable
 {
     public string Question { get; set; } = String.Empty;
     public string VariantA { get; set; } = String.Empty;
@@ -11,5 +11,5 @@ public class Test:Auditable
     public string VariantD { get; set; } = String.Empty;
     public string RightVariant { get; set; } = String.Empty;
     public TestType Type { get; set; }
-    public string  Description { get; set; } = String.Empty;
+    public string Description { get; set; } = String.Empty;
 }

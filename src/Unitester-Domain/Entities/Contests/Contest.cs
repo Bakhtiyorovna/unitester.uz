@@ -1,7 +1,7 @@
 ﻿using Unitester_Domain.Enums;
 namespace Unitester_Domain.Entities.Contests;
 
-public class Contest:Auditable
+public class Contest : Auditable
 {
     public DateTime StartedAt { get; set; }
     public DateTime EndAt { get; set; }

@@ -1,17 +1,17 @@
 ﻿using Dapper;
-using Unitester_DataAccess.Interfaces.Users;
+using Unitester_DataAccess.Interfaces.Contests;
 using Unitester_DataAccess.Utils;
-using Unitester_Domain.Entities.Users;
+using Unitester_Domain.Entities.Contests;
 
-namespace Unitester_DataAccess.Repositories.Users;
-public class UserRepository : BaseRepository, IUserRepository
+namespace Unitester_DataAccess.Repositories.Contests;
+public class ContestRepository : BaseRepository, IContestRepository
 {
     public async Task<long> CountAsync()
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"select count(*) from users";
+            string query = $"select count(*) from contests";
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
         }
@@ -25,13 +25,14 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<int> CreateAsync(User entity)
+    public async Task<int> CreateAsync(Contest entity)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.users(first_name, last_name, user_name, email, phone_number, rol, region, image_path, description, created_at, updated_at) " +
-                "VALUES(@FirstName, @LastName, @UserName, @Email, @PhoneNumber, @Rol, @Region, @ImagePath, @Description, @CreatedAt, @UpdatedAt); ";
+            string query = "INSERT INTO public.contests( " +
+                "started_at, end_at, status, student_number, description, created_at, updated_at) " +
+                "VALUES(StartedAt, EndAt, Status, StudentNumber, Description, CreatedAt, UpdatedAt); ";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -50,7 +51,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "DELETE FROM users WHERE id=@Id";
+            string query = "DELETE FROM contests WHERE id=@Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
@@ -64,20 +65,20 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<List<User>> GetAllAsync(PaginationParams @params)
+    public async Task<List<Contest>> GetAllAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM users order by id desc " +
+            string query = $"SELECT * FROM contests order by id desc " +
                 $"offset {@params.GetSkipCount()} limit {@params.PageSize}";
 
-            var result = (await _connection.QueryAsync<User>(query)).ToList();
+            var result = (await _connection.QueryAsync<Contest>(query)).ToList();
             return result;
         }
         catch
         {
-            return new List<User>();
+            return new List<Contest>();
         }
         finally
         {
@@ -85,13 +86,13 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<User> GetByIdAsync(long id)
+    public async Task<Contest> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM users where id=@Id";
-            var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
+            string query = $"SELECT * FROM contests where id=@Id";
+            var result = await _connection.QuerySingleAsync<Contest>(query, new { Id = id });
             return result;
         }
         catch
@@ -104,33 +105,14 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<long> IStudentcount(long id)
+    public async Task<int> UpdateAsync(long id, Contest entity)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"select count(*) from contest_student id = {id}";
-            var result = await _connection.QuerySingleAsync<long>(query);
-            return result;
-        }
-        catch
-        {
-            return 0;
-        }
-        finally
-        {
-            await _connection.CloseAsync();
-        }
-    }
-
-    public async Task<int> UpdateAsync(long id, User entity)
-    {
-        try
-        {
-            await _connection.OpenAsync();
-            string query = $"UPDATE users " +
-                $"SET first_name=@FirstName, last_name=@LastName, user_name=@UserName, email=@Email, phone_number= @PhoneNumber, rol=@Rol, description= @Description, created_at=@CreatedAt, updated_at= @UpdatedAt " +
-                $"WHERE id={id};";
+            string query = $"UPDATE public.contests " +
+                $"SET started_at = @StartedAt, end_at = @EndAt, status = @Status, student_number = @StudentNumber, description = @Description, created_at = @CreatedAt, updated_at = @UpdatedAt " +
+                $"WHERE id = {id}; ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

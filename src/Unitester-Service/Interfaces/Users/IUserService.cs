@@ -1,6 +1,6 @@
-﻿using Unitester_Service.Dtos.Users;
-using Unitester_DataAccess.Utils;
+﻿using Unitester_DataAccess.Utils;
 using Unitester_Domain.Entities.Users;
+using Unitester_Service.Dtos.Users;
 namespace Unitester_Service.Interfaces.Users;
 
 public interface IUserService

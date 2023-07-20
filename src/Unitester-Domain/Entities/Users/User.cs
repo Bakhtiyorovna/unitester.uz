@@ -2,7 +2,7 @@
 using Unitester_Domain.Enums;
 namespace Unitester_Domain.Entities.Users;
 
-public class User:Human
+public class User : Human
 {
     public UserRole Rol { get; set; }
     public string Email { get; set; } = String.Empty;

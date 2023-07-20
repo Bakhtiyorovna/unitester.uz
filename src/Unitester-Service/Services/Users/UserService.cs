@@ -1,18 +1,15 @@
-﻿using Unitester_DataAccess.Repositories.Users;
-using Unitester_Service.Services.Comman;
-using Unitester_Service.Interfaces.Comman;
-using Unitester_DataAccess.Interfaces.User;
-using Unitester_Service.Dtos.Users;
-using Unitester_Domain.Entities.Users;
-using Unitester_Service.Comman.Helpers;
-using Unitester_Domain.Exceptions.Users;
-using Unitester_Domain.Exceptions.Files;
+﻿using Unitester_DataAccess.Interfaces.Users;
 using Unitester_DataAccess.Utils;
-using Unitester_Domain.Enums;
+using Unitester_Domain.Entities.Users;
+using Unitester_Domain.Exceptions.Files;
+using Unitester_Domain.Exceptions.Users;
+using Unitester_Service.Comman.Helpers;
+using Unitester_Service.Dtos.Users;
+using Unitester_Service.Interfaces.Comman;
 using Unitester_Service.Interfaces.Users;
 namespace Unitester_Service.Services.Users;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private readonly IUserRepository _repository;
     private readonly IFileService _fileService;
@@ -35,7 +32,7 @@ public class UserService: IUserService
             UserName = dto.UserName,
             ImagePath = imagepath,
             Email = dto.Email,
-            PhoneNumber=dto.PhoneNumber,
+            PhoneNumber = dto.PhoneNumber,
             Rol = dto.Rol,
             Region = dto.Region,
             Description = dto.Description,

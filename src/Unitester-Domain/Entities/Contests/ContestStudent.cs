@@ -1,7 +1,7 @@
 ﻿
 namespace Unitester_Domain.Entities.Contests;
 
-public class ContestStudent:Auditable
+public class ContestStudent : Auditable
 {
     public long ContestId { get; set; }
     public long StudentId { get; set; }

@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Unitester_Service.Interfaces.Users;
-using Unitester_Service.Dtos.Users;
+﻿using Microsoft.AspNetCore.Mvc;
 using Unitester_DataAccess.Utils;
+using Unitester_Service.Dtos.Users;
+using Unitester_Service.Interfaces.Users;
 namespace Unitester_api.Controllers
 {
     [Route("api/users")]

@@ -1,6 +1,4 @@
-using Unitester_DataAccess.Interfaces;
-using Unitester_DataAccess.Interfaces.User;
-using Unitester_DataAccess.Repositories;
+using Unitester_DataAccess.Interfaces.Users;
 using Unitester_DataAccess.Repositories.Users;
 using Unitester_Service.Interfaces.Comman;
 using Unitester_Service.Interfaces.Users;

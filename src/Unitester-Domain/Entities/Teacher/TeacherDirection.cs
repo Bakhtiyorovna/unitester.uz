@@ -1,7 +1,7 @@
 ﻿
 namespace Unitester_Domain.Entities.Teacher;
 
-public class TeacherDirection:Auditable
+public class TeacherDirection : Auditable
 {
     public long TeacherId { get; set; }
     public long DirectionId { get; set; }

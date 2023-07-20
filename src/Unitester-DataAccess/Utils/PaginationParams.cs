@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Unitester_DataAccess.Utils;
+﻿namespace Unitester_DataAccess.Utils;
 
 public class PaginationParams
 {
