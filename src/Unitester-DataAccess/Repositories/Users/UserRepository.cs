@@ -104,6 +104,25 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
+    public async Task<User?> GetByPhoneAsync(string phone)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM users where phone_number = @PhoneNumber";
+            var data = await _connection.QuerySingleAsync<User>(query, new { PhoneNumber = phone });
+            return data;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public async Task<long> IStudentcount(long id)
     {
         try

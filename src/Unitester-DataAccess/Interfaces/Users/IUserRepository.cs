@@ -5,4 +5,5 @@ public interface IUserRepository : IRepository<User, User>,
     IGetAll<User>
 {
     public Task<long> IStudentcount(long id);
+    public Task<User?> GetByPhoneAsync(string phone);
 }

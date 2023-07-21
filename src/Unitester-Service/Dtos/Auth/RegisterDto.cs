@@ -5,9 +5,7 @@ namespace Unitester_Service.Dtos.Auth;
 
 public class RegisterDto
 {
-    [MaxLength(50)]
     public string FirstName { get; set; } = String.Empty;
-    [MaxLength(50)]
     public string LastName { get; set; }
     public string UserName { get; set; } = String.Empty;
     public Regions Region { get; set; }
@@ -15,8 +13,6 @@ public class RegisterDto
     public UserRole Rol { get; set; }
     public string Email { get; set; } = String.Empty;
     public string Password { get; set; } = String.Empty;
-
-    [MaxLength(13)]
     public string PhoneNumber { get; set; } = String.Empty;
     public string Description { get; set; } = String.Empty;
 }

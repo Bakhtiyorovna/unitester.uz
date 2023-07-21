@@ -3,5 +3,5 @@ namespace Unitester_Domain.Enums;
 
 public enum TestType
 {
-    Difficult, Medium, Easy
+    Qiyin=0, Ortacha , Oson
 }

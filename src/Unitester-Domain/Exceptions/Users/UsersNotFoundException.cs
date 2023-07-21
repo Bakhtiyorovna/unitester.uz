@@ -5,7 +5,7 @@ namespace Unitester_Domain.Exceptions.Users
     {
         public UserNotFoundException()
         {
-            this.TitleMessage = "User not found!";
+            this.TitleMessage = "Foydalanuvchi topilmadi!";
         }
     }
 }
