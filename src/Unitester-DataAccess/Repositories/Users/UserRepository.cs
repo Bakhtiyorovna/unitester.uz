@@ -85,6 +85,25 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM users where email = @Email";
+            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email });
+            return data;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public async Task<User> GetByIdAsync(long id)
     {
         try

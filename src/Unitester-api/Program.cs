@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Unitester_DataAccess.Interfaces.Tests;
 using Unitester_DataAccess.Interfaces.Users;
 using Unitester_DataAccess.Repositories.Tests;
@@ -28,9 +29,9 @@ builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<ITestService, TestService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IEmailSender,EmailSender>();
+builder.Services.AddScoped<IMemoryCache, MemoryCache>();
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

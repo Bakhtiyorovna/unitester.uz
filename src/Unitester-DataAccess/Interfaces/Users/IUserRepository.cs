@@ -6,4 +6,6 @@ public interface IUserRepository : IRepository<User, User>,
 {
     public Task<long> IStudentcount(long id);
     public Task<User?> GetByPhoneAsync(string phone);
+
+    public Task<User?> GetByEmailAsync(string email);
 }
