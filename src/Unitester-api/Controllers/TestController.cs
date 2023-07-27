@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Unitester_DataAccess.Utils;
 using Unitester_Domain.Enums;
 using Unitester_Service.Dtos.Tests;
@@ -19,6 +20,8 @@ namespace Unitester_api.Controllers
         }
 
         [HttpPost]
+
+        [Authorize(Roles = "Teacher, Admin")]
         public async Task<IActionResult> CreateAsync([FromForm] TestCreatedDto dto)
         {
             var createValidator = new TestCreatedValidator();
@@ -28,6 +31,7 @@ namespace Unitester_api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllTypeAsync([FromQuery] int page = 1, TestType type=0)
         => (Ok(await _service.GetAllTypeAsync(new PaginationParams(page, maxPageSize),type))); 
         

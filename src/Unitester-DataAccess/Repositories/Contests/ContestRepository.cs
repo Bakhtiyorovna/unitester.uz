@@ -105,6 +105,27 @@ public class ContestRepository : BaseRepository, IContestRepository
         }
     }
 
+    public async Task<int> RegisterPupilAsync(ContestStudent contest)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "INSERT INTO public.contest_student( " +
+                "contest_id, students_id, basic_direction_id, second_direction_id, total_result, description) " +
+               $"VALUES({contest.ContestId}, {contest.StudentId},{contest.BasicDirectionId}, {contest.SecondDirectionId}, {contest.TotalResult}, {contest.Description});";
+            var result = await _connection.ExecuteAsync(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public async Task<int> UpdateAsync(long id, Contest entity)
     {
         try

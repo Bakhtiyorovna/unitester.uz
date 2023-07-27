@@ -5,5 +5,5 @@ namespace Unitester_DataAccess.Interfaces.Contests;
 public interface IContestRepository : IRepository<Contest, ContetsViewModel>,
     IGetAll<Contest>
 {
-
+    public Task<int> RegisterPupilAsync(ContestStudent contest);
 }

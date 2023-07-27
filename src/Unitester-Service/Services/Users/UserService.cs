@@ -22,6 +22,8 @@ public class UserService : IUserService
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
+    public async Task<long> CountRoleAsync(string role) => await _repository.CountRoleAsync(role);
+
     public async Task<bool> CreateAsync(UserCreatedDto dto)
     {
         string imagepath = await _fileService.UploadImageAsync(dto.Image);
@@ -33,7 +35,7 @@ public class UserService : IUserService
             ImagePath = imagepath,
             Email = dto.Email,
             PhoneNumber = dto.PhoneNumber,
-            Rol = dto.Rol,
+            Rol = Unitester_Domain.Enums.UserRole.Teacher,
             Region = dto.Region,
             Description = dto.Description,
             CreatedAt = TimeHelper.GetDateTime(),

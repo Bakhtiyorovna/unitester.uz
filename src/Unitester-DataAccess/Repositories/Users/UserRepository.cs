@@ -11,7 +11,25 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"select count(*) from users";
+            string query = $"select count(*) from users;";
+            var result = await _connection.QuerySingleAsync<long>(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+    public async Task<long> CountRoleAsync(string role)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"select count(*) from users WHERE rol='{role}';";
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
         }
@@ -30,8 +48,8 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.users(first_name, last_name, user_name, email, phone_number, rol, region, image_path, description, created_at, updated_at) " +
-                "VALUES(@FirstName, @LastName, @UserName, @Email, @PhoneNumber, @Rol, @Region, @ImagePath, @Description, @CreatedAt, @UpdatedAt); ";
+            string query = "INSERT INTO public.users(first_name, last_name, user_name, email, phone_number, salt, password, rol , region, imagi_path, description, created_at, updated_at) " +
+                $"VALUES(@FirstName, @LastName, @UserName, @Email, @PhoneNumber,@Salt , @Password, '{entity.Rol.ToString()}',  @Region, @ImagePath, @Description, @CreatedAt, @UpdatedAt); ";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -85,13 +103,14 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+
+    public async Task<User?> GetByconstructionAsync(string phone)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM users where email = @Email";
-            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email });
+            string query = $"Select* from users where phone_number = '{phone}' order by id desc limit 1";
+            var data = await _connection.QuerySingleAsync<User>(query);
             return data;
         }
         catch
@@ -112,25 +131,6 @@ public class UserRepository : BaseRepository, IUserRepository
             string query = $"SELECT * FROM users where id=@Id";
             var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
             return result;
-        }
-        catch
-        {
-            return null;
-        }
-        finally
-        {
-            await _connection.CloseAsync();
-        }
-    }
-
-    public async Task<User?> GetByPhoneAsync(string phone)
-    {
-        try
-        {
-            await _connection.OpenAsync();
-            string query = "SELECT * FROM users where phone_number = @PhoneNumber";
-            var data = await _connection.QuerySingleAsync<User>(query, new { PhoneNumber = phone });
-            return data;
         }
         catch
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Unitester_Domain.Enums;
 using Unitester_Service.Dtos.Auth;
@@ -20,49 +21,50 @@ namespace Unitester_api.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
         {
             var result = await _authService.RegisterAsync(registerDto);
             return Ok(new { result.Result, result.CachedMinutes });
         }
 
-        //[HttpPost("register/send-code")]
-        //public async Task<IActionResult> SendCodeRegisterAsync(string phone)
-        //{
-        //    var result = PhoneNumberValidator.IsValid(phone);
-        //    if (result == false) return BadRequest("Telefon raqam topilmadi!");
-
-        //    var serviceResult = await _authService.SendCodeForRegisterAsync(phone);
-        //    return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
-        //}
-
-        //[HttpPost("register/verify")]
-        //public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
-        //{
-        //    var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.PhoneNumber, verifyRegisterDto.Code);
-        //    return Ok(new { serviceResult.Result, serviceResult.Token });
-        //}
-
+       
         [HttpPost("register/send-code")]
-        public async Task<IActionResult> SendCodeRegisterAsync(string email)
+        [AllowAnonymous]
+        public async Task<IActionResult> SendCodeRegisterAsync(string phone)
         {
-            var result = await _authService.SendCodeForRegisterAsync(email);
-            return Ok(new { result.Result, result.CachedVerificationMinutes });
+            var result = PhoneNumberValidator.IsValid(phone);
+            if (result == false) return BadRequest("Telefon raqam topilmadi!");
+
+            var serviceResult = await _authService.SendCodeForRegisterAsync(phone);
+            return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
         }
 
+
         [HttpPost("register/verify")]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
         {
-            var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.Email, verifyRegisterDto.Code);
+            var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.Construction, verifyRegisterDto.Code);
             return Ok(new { serviceResult.Result, serviceResult.Token });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("register/teacher")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> RegisterTeacherAsync([FromForm] RegisterDto dto)
+         => Ok(await _authService.RegisterTeacherAsync(dto));
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginAsync([FromForm] LoginDto logindto)
         {
-           UserRole identityRole = new UserRole();
-            identityRole = UserRole.Pupil;
-            return Ok(identityRole.ToString());
+            //var validator = new LoginValidator();
+            //var valResult = validator.Validate(logindto);
+
+            //if (valResult.IsValid == false) return BadRequest(valResult.Errors);
+
+            var serviceResult = await _authService.LoginAsync(logindto);
+            return Ok(new {serviceResult.Result, serviceResult.Token});
         }
     }
 }

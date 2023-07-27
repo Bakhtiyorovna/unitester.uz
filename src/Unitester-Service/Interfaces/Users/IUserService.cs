@@ -16,4 +16,6 @@ public interface IUserService
     public Task<User> GetByIdAsync(long userId);
 
     public Task<bool> UpdateAsync(long userId, UserUpdateDto dto);
+
+    public  Task<long> CountRoleAsync(string role);
 }
