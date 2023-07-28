@@ -6,6 +6,7 @@ using Unitester_Domain.Enums;
 using Unitester_Domain.Exceptions.Tests;
 using Unitester_Service.Comman.Helpers;
 using Unitester_Service.Dtos.Tests;
+using Unitester_Service.Interfaces.Comman;
 using Unitester_Service.Interfaces.Tests;
 
 namespace Unitester_Service.Services.Tests;
@@ -13,9 +14,12 @@ namespace Unitester_Service.Services.Tests;
 public class TestService : ITestService
 {
     private readonly ITestRepository _repository;
-    public TestService(ITestRepository testRepository)
+    private readonly IPaginator _paginator;
+    public TestService(ITestRepository testRepository,
+        IPaginator paginator)
     {
         this._repository = testRepository;
+        this._paginator = paginator;
     }
     public async Task<long> CountAsync()=> await _repository.CountAsync();
 
@@ -48,7 +52,6 @@ public class TestService : ITestService
         var test = await _repository.GetByIdAsync(testId);
         if (test is null) throw new TestNotFoundException();
 
-
         var dbResult = await _repository.DeleteAsync(testId);
         return dbResult > 0;
     }
@@ -62,6 +65,8 @@ public class TestService : ITestService
     public async Task<IList<Test>> GetAllTypeAsync(PaginationParams @params, TestType type)
     {
         var tests = await _repository.GetAllTypeAsync(@params, type);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
         return tests;
     }
 
@@ -76,6 +81,7 @@ public class TestService : ITestService
     {
         var test = await _repository.GetByIdAsync(testId);
         if (test is null) throw new TestNotFoundException();
+        long teacherId = 0;
 
         test.test = dto.test;
         test.VariantA = dto.VariantA;

@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\Layer\" />
     <Folder Include="wwwroot\media\audios\" />
     <Folder Include="wwwroot\media\dacuments\" />
     <Folder Include="wwwroot\media\videos\" />

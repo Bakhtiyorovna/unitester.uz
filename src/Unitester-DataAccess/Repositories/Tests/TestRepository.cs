@@ -145,7 +145,7 @@ public class TestRepository : BaseRepository, ITestRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM tests where id=@Id";
+            string query = $"SELECT id FROM tests where id=@Id";
             var result = await _connection.QuerySingleAsync<Test>(query, new { Id = id });
             return result;
         }

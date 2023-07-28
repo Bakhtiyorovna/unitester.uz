@@ -13,7 +13,7 @@ namespace Unitester_api.Controllers
     public class TestController:ControllerBase
     {
         private readonly ITestService _service;
-        private readonly int maxPageSize = 30;
+        private readonly int maxPageSize = 3;
         public TestController(ITestService service)
         {
             this._service = service;
@@ -33,8 +33,16 @@ namespace Unitester_api.Controllers
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllTypeAsync([FromQuery] int page = 1, TestType type=0)
-        => (Ok(await _service.GetAllTypeAsync(new PaginationParams(page, maxPageSize),type))); 
-        
+        => (Ok(await _service.GetAllTypeAsync(new PaginationParams(page, maxPageSize),type)));
 
+        [HttpPut("{testId}")]
+        [Authorize(Roles = "Admin , Teacher")]
+        public async Task<IActionResult> UpdateAsync(long testId, [FromForm] TestUpdateDto dto)
+           => Ok(await _service.UpdateAsync(testId, dto));
+
+        [HttpDelete("{testId}")]
+        [Authorize(Roles = "Admin, Teacher")]
+        public async Task<IActionResult> DeleteAsync(long testId)
+           => Ok(await _service.DeleteAsync(testId));
     }
 }

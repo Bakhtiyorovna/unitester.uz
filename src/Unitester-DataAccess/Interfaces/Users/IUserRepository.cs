@@ -9,5 +9,4 @@ public interface IUserRepository : IRepository<User, User>,
     public Task<User?> GetByconstructionAsync(string construction);
 
     public Task<long> CountRoleAsync(string role);
-
 }

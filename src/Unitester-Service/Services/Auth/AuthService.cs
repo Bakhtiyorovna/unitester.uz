@@ -51,7 +51,6 @@ public class AuthService : IAuthService
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
 
-
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string phone)
     {
         if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + phone, out RegisterDto registerDto))
@@ -78,7 +77,8 @@ public class AuthService : IAuthService
 
             var smsResult = await _smsSender.SendAsync(smsMessage);
             if (smsResult is true) return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
-            else return (Result: false, CachedVerificationMinutes: 0);
+            else
+                return (Result: false, CachedVerificationMinutes: 0);
         }
         else throw new UserCacheDataExpiredException();
     }

@@ -6,4 +6,7 @@ public interface IContestRepository : IRepository<Contest, ContetsViewModel>,
     IGetAll<Contest>
 {
     public Task<int> RegisterPupilAsync(ContestStudent contest);
+    public Task<long?> CountStudentAsync(long contestId);
+
+    public Task<bool> UpdateStudentNumberAsync(long number, long contestId);
 }

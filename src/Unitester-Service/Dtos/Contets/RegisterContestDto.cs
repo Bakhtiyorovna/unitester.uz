@@ -10,8 +10,6 @@ namespace Unitester_Service.Dtos.Contets
     {
         public long contestId { get; set; }
 
-        public long pupilId { get; set; }
-
         public long basicDerictionId { get; set; }
 
         public long secondDerictionId { get; set; }

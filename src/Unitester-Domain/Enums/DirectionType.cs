@@ -1,5 +1,4 @@
-﻿
-namespace Unitester_Domain.Enums;
+﻿namespace Unitester_Domain.Enums;
 
 public enum DirectionType
 {

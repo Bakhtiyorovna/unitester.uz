@@ -25,6 +25,8 @@ public class ContestRepository : BaseRepository, IContestRepository
         }
     }
 
+  
+
     public async Task<int> CreateAsync(Contest entity)
     {
         try
@@ -32,7 +34,7 @@ public class ContestRepository : BaseRepository, IContestRepository
             await _connection.OpenAsync();
             string query = "INSERT INTO public.contests( " +
                 "started_at, end_at, status, student_number, description, created_at, updated_at) " +
-                "VALUES(StartedAt, EndAt, Status, StudentNumber, Description, CreatedAt, UpdatedAt); ";
+                "VALUES(@StartedAt, @EndAt, @Status, @StudentNumber, @Description, @CreatedAt, @UpdatedAt); ";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -112,7 +114,7 @@ public class ContestRepository : BaseRepository, IContestRepository
             await _connection.OpenAsync();
             string query = "INSERT INTO public.contest_student( " +
                 "contest_id, students_id, basic_direction_id, second_direction_id, total_result, description) " +
-               $"VALUES({contest.ContestId}, {contest.StudentId},{contest.BasicDirectionId}, {contest.SecondDirectionId}, {contest.TotalResult}, {contest.Description});";
+               $"VALUES({contest.ContestId}, {contest.StudentId},{contest.BasicDirectionId}, {contest.SecondDirectionId}, {contest.TotalResult}, '{contest.Description}');";
             var result = await _connection.ExecuteAsync(query);
             return result;
         }
@@ -141,6 +143,47 @@ public class ContestRepository : BaseRepository, IContestRepository
         catch
         {
             return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+     public async Task<long?> CountStudentAsync(long contestId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"Select student_number from contests where id=@Id Order by id asc";
+            var result = Convert.ToInt64(await _connection.QuerySingleAsync<Contest>(query, new { Id = contestId }));
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<bool> UpdateStudentNumberAsync(long number, long contestId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"UPDATE public.contests " +
+                $" student_number={number}" +
+                $"WHERE id={contestId}; ";
+
+            var result = await _connection.ExecuteAsync(query);
+            return result>0;
+        }
+        catch
+        {
+            return false;
         }
         finally
         {

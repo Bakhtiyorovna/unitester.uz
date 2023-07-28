@@ -5,6 +5,7 @@ using Unitester_Domain.Enums;
 using Unitester_Domain.Exceptions.Contests;
 using Unitester_Service.Comman.Helpers;
 using Unitester_Service.Dtos.Contets;
+using Unitester_Service.Interfaces.Auth;
 using Unitester_Service.Interfaces.Contest;
 
 namespace Unitester_Service.Services.Contests;
@@ -12,10 +13,13 @@ namespace Unitester_Service.Services.Contests;
 public class ContestService : IContestService
 {
     private readonly IContestRepository _repository;
+    private readonly IIdentityService _identity;
     public int ContestTime = 5;
-    public ContestService(IContestRepository userRepository)
+    public ContestService(IContestRepository userRepository,
+        IIdentityService identity)
     {
         this._repository = userRepository;
+        this._identity=identity;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -62,15 +66,17 @@ public class ContestService : IContestService
     {
         ContestStudent contest = new ContestStudent()
         {
-           ContestId=dto.contestId,
-           StudentId=dto.pupilId,
-           BasicDirectionId=dto.basicDerictionId,
-           SecondDirectionId=dto.secondDerictionId
+            ContestId = dto.contestId,
+            StudentId = _identity.UserId,
+            BasicDirectionId=dto.basicDerictionId,
+            SecondDirectionId=dto.secondDerictionId
         };
+        long StudentNumber =Convert.ToInt64(await _repository.CountStudentAsync(dto.contestId));
+        bool resultupdate = await _repository.UpdateStudentNumberAsync(StudentNumber + 1, dto.contestId);
+
         var result = await _repository.RegisterPupilAsync(contest);
         return result > 0;
     }
-
 
     public async Task<bool> UpdateAsync(long contestId, ContestUpdatedDto dto)
     {
